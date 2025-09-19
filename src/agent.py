@@ -11,7 +11,7 @@ from livekit.plugins import (
 )
 
 import os
-from tools import getGlobalWarmingData, curiosity_web_search
+from tools import getGlobalWarmingData, internetSearch
 from prompts import AGENT_INSTRUCTION, SESSION_INSTRUCTION
 # from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
@@ -22,7 +22,7 @@ class Assistant(Agent):
     def __init__(self) -> None:
         super().__init__(
             instructions=AGENT_INSTRUCTION,
-            tools=[getGlobalWarmingData]
+            tools=[getGlobalWarmingData, internetSearch]
         )
 
 
@@ -46,7 +46,11 @@ async def entrypoint(ctx: agents.JobContext):
     )
 
     await session.generate_reply(
-        instructions="Use 'getGlobalWarmingData' tool and then 'curiosity_web_search' tool to start conversation that spark curiosity about global warming and its impacts."
+        instructions=(
+                "Spark curiosity from the start: first, reveal Earth's current temperature change with the 'getGlobalWarmingData' tool. "
+                "Then invite the user to imagine what could happen if global temperatures rise by 2 °C. "
+                "Finally, enrich the conversation by uncovering the answer with the 'internetSearch' tool, keeping the user engaged and intrigued."
+            )
     )
 
 
